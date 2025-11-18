@@ -13,6 +13,8 @@ class ViewController: UIViewController {
     var botonesPlayer: AVAudioPlayer?
     override func viewDidLoad() {
         super.viewDidLoad()
+        AudioManager.shared.playBackgroundMusic()
+        AudioManager.shared.unmuteBackgroundMusic()
         
         let swiftUIView = HomeView(onPadresTap: {[weak self] in
             self?.goToPadres()
@@ -30,39 +32,20 @@ class ViewController: UIViewController {
         view.addSubview(hostingController.view)
         hostingController.didMove(toParent: self)
     }
-        
-    @objc func goToParents() {
-        playBotonSound()
-        let parentsVC = ParentsViewController()
-        parentsVC.modalPresentationStyle = .fullScreen
-        present(parentsVC, animated: true, completion: nil)
-    }
     
     @objc func goToPadres() {
-        playBotonSound()
+        AudioManager.shared.playButtonSound()
+        AudioManager.shared.muteBackgroundMusic()
         let padresVC = PadresViewController()
         padresVC.modalPresentationStyle = .fullScreen
         present(padresVC, animated: true, completion: nil)
     }
     
     @objc func goToNiveles() {
-        playBotonSound()
+        AudioManager.shared.playButtonSound()
         let nivelesVC = NivelesViewController()
         nivelesVC.modalPresentationStyle = .fullScreen
         present(nivelesVC, animated: true, completion: nil)
-    }
-    
-    func playBotonSound() {
-        guard let url = Bundle.main.url(forResource: "Botones", withExtension: "mp3") else {
-            return
-        }
-
-        do {
-            botonesPlayer = try AVAudioPlayer(contentsOf: url)
-            botonesPlayer?.prepareToPlay()
-            botonesPlayer?.play()
-        } catch {
-        }
     }
                         
     struct HomeView: View {

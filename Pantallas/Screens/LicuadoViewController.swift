@@ -316,7 +316,7 @@ class LicuadoViewController: UIViewController {
     }
     
     @objc func goToNiveles() {
-        playBotonesSound()
+        AudioManager.shared.playButtonSound()
         gameTimer?.invalidate()
         gameTimer = nil
 
@@ -340,7 +340,7 @@ class LicuadoViewController: UIViewController {
     }
     
     @objc func restartGame() {
-        playBotonesSound()
+        AudioManager.shared.playButtonSound()
         resetGame()
     }
     
@@ -940,21 +940,7 @@ class LicuadoViewController: UIViewController {
             shinePlayer?.play()
         } catch { }
     }
-    func playBotonesSound() {
-        if botonesPlayerPrepared, let player = botonesPlayer {
-            player.currentTime = 0
-            player.play()
-            return
-        }
 
-        guard let url = Bundle.main.url(forResource: "Botones", withExtension: "mp3") else { return }
-
-        do {
-            botonesPlayer = try AVAudioPlayer(contentsOf: url)
-            botonesPlayer?.prepareToPlay()
-            botonesPlayer?.play()
-        } catch { }
-    }
     func playPoingSound() {
         if poingPlayerPrepared, let player = poingPlayer {
             player.currentTime = 0

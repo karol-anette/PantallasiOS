@@ -16,6 +16,7 @@ class NivelesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        AudioManager.shared.unmuteBackgroundMusic()
 
         let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
         backgroundImage.image = UIImage(named: "fondonutri")
@@ -126,53 +127,58 @@ class NivelesViewController: UIViewController {
     }
 
     @objc func showPreviousSprite() {
-        playBotonSound()
+        AudioManager.shared.playButtonSound()
         currentIndex = (currentIndex - 1 < 1) ? maxNivel : currentIndex - 1
         nivel1ImageView.image = UIImage(named: "Nivel\(currentIndex)")
     }
     
     @objc func showNextSprite() {
-        playBotonSound()
+        AudioManager.shared.playButtonSound()
         currentIndex = (currentIndex + 1 > maxNivel) ? 1 : currentIndex + 1
         nivel1ImageView.image = UIImage(named: "Nivel\(currentIndex)")
     }
     
     @objc func goToHome() {
-        playBotonSound()
+        AudioManager.shared.playButtonSound()
         let homeVC = ViewController()
         homeVC.modalPresentationStyle = .fullScreen
         present(homeVC, animated: true, completion: nil)
     }
     
     @objc func goToAhorcado() {
-        playBotonSound()
+        AudioManager.shared.playButtonSound()
+        AudioManager.shared.muteBackgroundMusic()
         let ahorcadoVC = AhorcadoViewController()
         ahorcadoVC.modalPresentationStyle = .fullScreen
         present(ahorcadoVC, animated: true, completion: nil)
     }
     
     @objc func goToClasificar() {
-        playBotonSound()
+        AudioManager.shared.playButtonSound()
+        AudioManager.shared.muteBackgroundMusic()
         let clasificarVC = ClasificarViewController()
         clasificarVC.modalPresentationStyle = .fullScreen
         present(clasificarVC, animated: true, completion: nil)
     }
     @objc func goToLicuado() {
-        playBotonSound()
+        AudioManager.shared.playButtonSound()
+        AudioManager.shared.muteBackgroundMusic()
         let licuadoVC = LicuadoViewController()
         licuadoVC.modalPresentationStyle = .fullScreen
         present(licuadoVC, animated: true, completion: nil)
     }
     
     @objc func goToMemorama() {
-        playBotonSound()
+        AudioManager.shared.playButtonSound()
+        AudioManager.shared.muteBackgroundMusic()
         let memoramaVC = MemoramaViewController()
         memoramaVC.modalPresentationStyle = .fullScreen
         present(memoramaVC, animated: true, completion: nil)
     }
     
     @objc func goToPlato() {
-        playBotonSound()
+        AudioManager.shared.playButtonSound()
+        AudioManager.shared.muteBackgroundMusic()
         let platoVC = PlatoViewController()
         platoVC.modalPresentationStyle = .fullScreen
         present(platoVC, animated: true, completion: nil)
@@ -192,20 +198,6 @@ class NivelesViewController: UIViewController {
             goToPlato()
         default:
             break
-        }
-    }
-    func playBotonSound() {
-        guard let url = Bundle.main.url(forResource: "Botones", withExtension: "mp3") else {
-            print("ERROR: Botones.mp3 no encontrado")
-            return
-        }
-
-        do {
-            botonesPlayer = try AVAudioPlayer(contentsOf: url)
-            botonesPlayer?.prepareToPlay()
-            botonesPlayer?.play()
-        } catch {
-            print("ERROR al reproducir Botones.mp3: \(error)")
         }
     }
 
