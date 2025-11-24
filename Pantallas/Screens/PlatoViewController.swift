@@ -66,6 +66,7 @@ class PlatoViewController: UIViewController {
         case frutas, verduras, carbohidratos, origenanimal
     }
     var backgroundImage: UIImageView!
+    var backgroundMusicPlayer: AVAudioPlayer?
 
     var currentCategory: FoodCategory?
     var resumenLabel: UILabel!
@@ -119,6 +120,7 @@ class PlatoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        playBackgroundMusic()
         setupCategories()
         setupArrows()
     }
@@ -428,7 +430,7 @@ class PlatoViewController: UIViewController {
             foodStack.topAnchor.constraint(equalTo: trayView.topAnchor, constant: 30),
             foodStack.leadingAnchor.constraint(equalTo: trayView.leadingAnchor, constant: 10),
             foodStack.trailingAnchor.constraint(equalTo: trayView.trailingAnchor, constant: -10),
-            foodStack.bottomAnchor.constraint(equalTo: trayView.bottomAnchor, constant: -45)
+            foodStack.bottomAnchor.constraint(equalTo: trayView.bottomAnchor, constant: -40)
         ])
         
         basuraImageView = UIImageView(image: UIImage(named: "basura"))
@@ -587,6 +589,8 @@ class PlatoViewController: UIViewController {
 
     @objc func goToNiveles() {
         AudioManager.shared.playButtonSound()
+        backgroundMusicPlayer?.stop()
+        backgroundMusicPlayer = nil
         let nivelesVC=NivelesViewController()
         nivelesVC.modalPresentationStyle = .fullScreen
         present(nivelesVC, animated: true, completion: nil)
@@ -966,6 +970,21 @@ class PlatoViewController: UIViewController {
         let nonEmptyLines = lines.filter { !$0.trimmingCharacters(in: .whitespaces).isEmpty }
         return nonEmptyLines.joined(separator: "\n")
     }
+    func playBackgroundMusic() {
+        guard let url = Bundle.main.url(forResource: "musicaplato", withExtension: "mp3") else {
+            return
+        }
+
+        do {
+            backgroundMusicPlayer = try AVAudioPlayer(contentsOf: url)
+            backgroundMusicPlayer?.numberOfLoops = -1    // música en loop
+            backgroundMusicPlayer?.volume = 0.6
+            backgroundMusicPlayer?.prepareToPlay()
+            backgroundMusicPlayer?.play()
+        } catch {
+        }
+    }
+
 
 
 }
